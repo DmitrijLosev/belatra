@@ -1,10 +1,20 @@
 import styled from "styled-components";
 import {Icon} from "../common/Icon/Icon.tsx";
+import React from "react";
+import {DataRowsItemType} from "../Main.tsx";
 
+type ResultTablePropsType = {
+    dataRows: DataRowsItemType[]
+    setIsShowTablePopUp?:(value:boolean)=>void
+    isPopUp?:boolean}
 
-export const ResultTable = () => {
+export const ResultTable:React.FC<ResultTablePropsType> = ({dataRows, setIsShowTablePopUp=null, isPopUp = false}) => {
+
+    const openFullTableHandler = ()=>{if(setIsShowTablePopUp) setIsShowTablePopUp(true)}
+
+    const dataRowsTable = isPopUp ? dataRows: dataRows.filter((_, index) => index < 10)
     return (
-            <Table>
+            <Table onClick = {openFullTableHandler}>
                 <thead>
                 <HeadRow>
                     <th>Place</th>
@@ -14,71 +24,16 @@ export const ResultTable = () => {
                 </HeadRow>
                 </thead>
                 <TableBody>
-                <tr>
-                    <td><Icon iconId={"place1"}/></td>
-                    <td>Esther Howard</td>
-                    <td>120092142</td>
-                    <td>A$ 4000</td>
-                </tr>
-                <tr>
-                    <td><Icon iconId={"place2"}/></td>
-                    <td>Brooklyn Simmons</td>
-                    <td>10912349</td>
-                    <td>A$ 2000</td>
-                </tr>
-                <tr>
-                    <td><Icon iconId={"place3"}/></td>
-                    <td>Jenny Wilson</td>
-                    <td>8912349</td>
-                    <td>A$ 1000</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>Jacob Jones</td>
-                    <td>733321</td>
-                    <td>A$ 800</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>Robert Fox</td>
-                    <td>456781</td>
-                    <td>A$ 700</td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td>Devon Lane</td>
-                    <td>12656</td>
-                    <td>A$ 500</td>
-                </tr>
-                <tr>
-                    <td>7</td>
-                    <td>Darrell Steward</td>
-                    <td>2367</td>
-                    <td>A$ 400</td>
-                </tr>
-                <tr>
-                    <td>8</td>
-                    <td>Eleanor Pena</td>
-                    <td>1209</td>
-                    <td>A$ 300</td>
-                </tr>
-                <tr>
-                    <td>9</td>
-                    <td>Courtney Henry</td>
-                    <td>789</td>
-                    <td>A$ 200</td>
-                </tr>
-                <tr>
-                    <td>10</td>
-                    <td>Jane Cooper</td>
-                    <td>34</td>
-                    <td>A$ 100</td>
-                </tr>
-
-
+                    {dataRowsTable.map(u=>
+                    <tr key = {u.player}>
+                        <td>{u.place === "place1" || u.place === "place2" || u.place === "place3" ? <Icon iconId={u.place}/> : u.place}</td>
+                        <td>{u.player}</td>
+                        <td>{u.score}</td>
+                        <td>{u.prize}</td>
+                    </tr>
+                    )}
                 </TableBody>
             </Table>
-
     );
 };
 
@@ -88,6 +43,10 @@ const Table = styled.table`
   text-indent: unset;
   width: 100%;
   border: none;
+  
+  &:hover {
+    cursor: pointer;
+  }
 
   & > * {
     box-sizing: border-box;

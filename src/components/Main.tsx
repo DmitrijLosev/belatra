@@ -7,15 +7,43 @@ import banner550 from "../assets/image/banner550.png"
 import bannerMob from "../assets/image/bannerMob.webp"
 import bizzo_casino from "../assets/image/bizzo_casino.svg"
 import {Icon} from "./common/Icon/Icon.tsx";
-import backgroundInstagram from "../assets/icons/backgroundInstagram.svg"
 import {ResultTable} from "./Layout/ResultTable.tsx";
 import {useState} from "react";
 import {HowItWorksPopUp} from "./Layout/HowItWorksPopUp.tsx";
+import {ResultTablePopUp} from "./Layout/ResultTablePopUp.tsx";
+
+export type DataRowsItemType = {
+    place:"place1" | "place2" | "place3" | number
+    player:string
+    score:number
+    prize:string}
 
 export const Main = () => {
 
-    const [isShowPopUp, setIsShowPopUp] = useState<boolean>(false)
-
+    const [isShowHowItWorksPopUp, setIsShowHowItWorksPopUp] = useState<boolean>(false)
+    const [isShowTablePopUp,setIsShowTablePopUp] = useState(false);
+    const dataRows = [
+        {place:"place1", player:"Esther Howard", score:120092142, prize:"A$ 4000"},
+        {place:"place2", player:"Brooklyn Simmons", score:10912349, prize:"A$ 2000"},
+        {place:"place3", player:"Jenny Wilson", score:8912349, prize:"A$ 1000"},
+        {place:4, player:"Jacob Jones", score:733321, prize:"A$ 800"},
+        {place:5, player:"Robert Fox", score:456781, prize:"A$ 700"},
+        {place:6, player:"Devon Lane", score:12656, prize:"A$ 500"},
+        {place:7, player:"Darrell Steward", score:2367, prize:"A$ 400"},
+        {place:8, player:"Eleanor Pena", score:1209, prize:"A$ 300"},
+        {place:9, player:"Courtney Henry", score:789, prize:"A$ 200"},
+        {place:10, player:"Jane Cooper", score:534, prize:"A$ 100"},
+        {place:11, player:"Esther Cooper", score:484, prize:"A$ 99"},
+        {place:12, player:"Courtney  Howard", score:474, prize:"A$ 91"},
+        {place:13, player:"Pena Howard", score:387, prize:"A$ 70"},
+        {place:14, player:"Esther Fox", score:356, prize:"A$ 70"},
+        {place:15, player:"Darrell Howard", score:336, prize:"A$ 65"},
+        {place:16, player:"Jenny Lane", score:316, prize:"A$ 57"},
+        {place:17, player:"Esther Brooklyn", score:227, prize:"A$ 44"},
+        {place:18, player:"Henry Howard", score:211, prize:"A$ 33"},
+        {place:19, player:"Darrell Brooklyn", score:199, prize:"A$ 20"},
+        {place:20, player:"Darrell  Henry", score:189, prize:"A$ 19"}
+    ] as DataRowsItemType[]
     const menuItems: { id: string }[] = [
         {id: "facebook"},
         {id: "instagram"},
@@ -24,12 +52,11 @@ export const Main = () => {
         {id: "telegram"},
         {id: "twitter"},
         {id: "kick"}]
-
     return (
         <StyledMain>
             <Container>
                 <BannerSection>
-                    <HowItWorksPopUp isShowPopUp={isShowPopUp} setIsShowPopUp={setIsShowPopUp}/>
+                    <HowItWorksPopUp isShowPopUp={isShowHowItWorksPopUp} setIsShowPopUp={setIsShowHowItWorksPopUp}/>
                     <Banner>
                         <StyledLogo src={logo} alt="logo"/>
                         <StyledBannerTournament src={banner_tournament} alt="banner tournament"/>
@@ -39,7 +66,7 @@ export const Main = () => {
                                 <BizzoImg src={bizzo_casino} alt="bizzo_casino"/>
                                 SIGN UP NOW
                             </SignUpButton>
-                            <HowWorkButton onClick={() => setIsShowPopUp(!isShowPopUp)}>
+                            <HowWorkButton onClick={() => setIsShowHowItWorksPopUp(!isShowHowItWorksPopUp)}>
                                 HOW DOES IT WORKS?
                             </HowWorkButton>
                         </ButtonWrapper>
@@ -63,7 +90,8 @@ export const Main = () => {
                         <TabTitle>Leaderboard</TabTitle>
                         <TableUpdateDate><b>Table update date:</b>07/03/2024</TableUpdateDate>
                     </TitleWrapper>
-                    <ResultTable/>
+                    <ResultTable dataRows = {dataRows}  setIsShowTablePopUp = {setIsShowTablePopUp}/>
+                    <ResultTablePopUp dataRows={dataRows} isShowTablePopUp={isShowTablePopUp} setIsShowTablePopUp = {setIsShowTablePopUp}/>
                 </LeaderBoardSection>
             </Container>
         </StyledMain>
@@ -264,8 +292,8 @@ const List = styled.ul`
   }
 
   & > li:nth-child(2) {
-    background: url(${backgroundInstagram});
-    z-index: 2;
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
+    border-radius: 50%;
   }
 `
 const TableUpdateDate = styled.p`
